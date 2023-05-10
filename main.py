@@ -44,39 +44,42 @@ class Grammar:
         for key in self.products:
             print(key, self.products[key])
 
-    def verify_word(self, word, current_symbol = None, results = []):
+    def verify_word(self, word, current_symbol = None):
         
 
         # default case from start
         if current_symbol == None:
             current_symbol = self.start
 
-        print(current_symbol, end=' -> ')
         
         # if we parsed the whole word and we have 
         # a lambda exit - we validated the word
-        if len(word) == 0 and ['λ'] in self.products[current_symbol]:
-            results.append(True)
+        if len(word) == 0 and ['λ'] in self.products[current_symbol] :\
+            # or len(word) == 1 and [word] in self.products[current_symbol]:
+            print(current_symbol, end=' -> ')
+
             return True
         
         for letter in self.products[current_symbol]:
 
+
             # right linear grammar
             if word and word[0] == letter[0] and letter[0].islower():
                 if self.verify_word(word[1:], letter[1]):
+                    
+                    print(current_symbol, end=' -> ')
                     return True
             
             # left linear grammar
             elif letter[0].isupper():
                 if self.verify_word(letter[1] + word, letter[0]):
+                    
+                    print(current_symbol, end=' -> ')
                     return True
         
-        
-        results.append(False)
-        print(results)
         return False
             
 x = Grammar()
 x.read_from_file()
-x.display_products()
-print(x.verify_word('d'))
+# x.display_products()
+print(x.verify_word('aad'))
