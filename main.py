@@ -34,7 +34,10 @@ class Grammar:
                 products = "".join(line.split(" -> ")[1]).strip().split(" | ")
                 products = [[letter for letter in word] for word in products]
 
-                self.products[left] = products
+                if left in self.products:
+                    self.products[left].extend(products)
+                else:
+                    self.products[left] = products
 
                 # set the start
                 if self.start == None:
@@ -54,7 +57,7 @@ class Grammar:
         
         # if we parsed the whole word and we have 
         # a lambda exit - we validated the word
-        if len(word) == 0 and ['λ'] in self.products[current_symbol] :\
+        if (len(word) == 0 or word == 'λ') and ['λ'] in self.products[current_symbol] :\
             # or len(word) == 1 and [word] in self.products[current_symbol]:
             print(current_symbol, end=' -> ')
 
@@ -78,8 +81,20 @@ class Grammar:
                     return True
         
         return False
-            
-x = Grammar()
-x.read_from_file()
-# x.display_products()
-print(x.verify_word('aad'))
+    
+
+if __name__ == '__main__':
+    x = Grammar()
+    x.read_from_file()
+    # x.display_products()
+
+    while True:
+
+        print("\nPress q to exit")
+        word = input("Enter a word: ")
+        
+        if word == 'q':
+            break
+
+        print(f"Choosen word: {word}")
+        print('Result: ', x.verify_word(word))
