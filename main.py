@@ -65,10 +65,14 @@ class Grammar:
         
         for letter in self.products[current_symbol]:
 
-
             # right linear grammar
             if word and word[0] == letter[0] and letter[0].islower():
-                if self.verify_word(word[1:], letter[1]):
+
+                # only a terminal
+                if len(letter) == 1:
+                    return True
+
+                elif self.verify_word(word[1:], letter[1]):
                     
                     print(current_symbol, end=' -> ')
                     return True
